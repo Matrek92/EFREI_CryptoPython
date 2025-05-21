@@ -4,12 +4,12 @@ from flask import render_template
 from flask import json
 from urllib.request import urlopen
 import sqlite3
-                                                                                                                                       
-app = Flask(__name__)                                                                                                                  
-                                                                                                                                       
+
+app = Flask(__name__)
+
 @app.route('/')
 def hello_world():
-    return render_template('hello.html') #Commit
+    return render_template('hello.html')  # Commit
 
 key = Fernet.generate_key()
 f = Fernet(key)
@@ -19,6 +19,15 @@ def encryptage(valeur):
     valeur_bytes = valeur.encode()  # Conversion str -> bytes
     token = f.encrypt(valeur_bytes)  # Encrypt la valeur
     return f"Valeur encryptée : {token.decode()}"  # Retourne le token en str
-                                                                                                                                                     
+
+@app.route('/decrypt/<string:message>')
+def decryptage(message):
+    try:
+        decrypted_bytes = f.decrypt(message.encode())
+        decrypted = decrypted_bytes.decode()
+        return f"Message décrypté : {decrypted}"
+    except Exception as e:
+        return f"Erreur lors du décryptage : {e}"
+
 if __name__ == "__main__":
-  app.run(debug=True)
+    app.run(debug=True)
