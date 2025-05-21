@@ -52,7 +52,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd $HOME/www/flask
+            touch init.py
             # Par exemple, redémarrage via systemctl ou un script perso
             # systemctl restart flask.service
             # ou un script bash
-            ./restart.sh
+            
